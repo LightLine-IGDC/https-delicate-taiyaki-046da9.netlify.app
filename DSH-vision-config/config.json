@@ -1,0 +1,8 @@
+{
+  "provider": "alibaba",
+  "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "model": "qwen3-vl-flash",
+  "models": [],
+  "compressThresholdMB": 5,
+  "apiKeyEnv": "DASHSCOPE_API_KEY"
+}

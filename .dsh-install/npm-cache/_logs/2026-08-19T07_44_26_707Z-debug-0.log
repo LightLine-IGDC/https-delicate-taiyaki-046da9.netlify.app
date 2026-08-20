@@ -1,0 +1,37 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.17.0
+2 info using node@v24.19.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:F:\AI\Project\DshHaressTest\.dsh-install\pnpm-bootstrap\.npmrc
+5 silly config load:file:C:\Users\l2910\.npmrc
+6 silly config load:file:C:\Users\l2910\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install pnpm
+8 verbose argv "install" "pnpm" "--prefix" "F:\\AI\\Project\\DshHaressTest\\.dsh-install\\pnpm-bootstrap" "--cache" "F:\\AI\\Project\\DshHaressTest\\.dsh-install\\npm-cache" "--no-audit" "--no-fund" "--loglevel" "error"
+9 verbose logfile logs-max:10 dir:F:\AI\Project\DshHaressTest\.dsh-install\npm-cache\_logs\2026-08-19T07_44_26_707Z-
+10 verbose logfile F:\AI\Project\DshHaressTest\.dsh-install\npm-cache\_logs\2026-08-19T07_44_26_707Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly allow-scripts no package.json at prefix Could not read package.json: Error: ENOENT: no such file or directory, open 'F:\AI\Project\DshHaressTest\.dsh-install\pnpm-bootstrap\package.json'
+13 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+14 silly idealTree buildDeps
+15 silly fetch manifest pnpm@*
+16 silly packumentCache full:https://registry.npmjs.org/pnpm cache-miss
+17 http fetch GET 200 https://registry.npmjs.org/npm 1966ms
+18 http fetch GET 200 https://registry.npmjs.org/pnpm 2149ms (cache miss)
+19 silly packumentCache full:https://registry.npmjs.org/pnpm set size:undefined disposed:false
+20 silly placeDep ROOT pnpm@11.22.0 OK for:  want: *
+21 silly reify moves {}
+22 http cache pnpm@https://registry.npmjs.org/pnpm/-/pnpm-11.22.0.tgz 0ms (cache hit)
+23 silly tarball no local data for pnpm@https://registry.npmjs.org/pnpm/-/pnpm-11.22.0.tgz. Extracting by manifest.
+24 http fetch GET 200 https://registry.npmjs.org/pnpm/-/pnpm-11.22.0.tgz 7656ms (cache miss)
+25 silly ADD node_modules/pnpm
+26 verbose cwd F:\AI\Project\DshHaressTest
+27 verbose os Windows_NT 10.0.26200
+28 verbose node v24.19.0
+29 verbose npm  v11.17.0
+30 notice
+30 notice New major version of npm available! 11.17.0 -> 12.0.2
+30 notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+30 notice To update run: npm install -g npm@12.0.2
+30 notice  { force: true, Symbol(proc-log.meta): true }
+31 verbose exit 0
+32 info ok

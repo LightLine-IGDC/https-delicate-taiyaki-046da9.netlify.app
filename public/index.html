@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>哈尔滨理工大学光线独立游戏制作社团 · LIGHT RAY</title>
+  <meta name="description" content="哈尔滨理工大学光线独立游戏制作社团——以光为笔，创造世界。社团简介、时间线、作品展示、知识库、活动收录、行业资讯与成员分享。" />
+  <meta name="theme-color" content="#060708" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%232f5c47'/%3E%3Cstop offset='0.18' stop-color='%232e4f7f'/%3E%3Cstop offset='0.36' stop-color='%2374aecd'/%3E%3Cstop offset='0.5' stop-color='%23ffffff'/%3E%3Cstop offset='0.64' stop-color='%23ecdfaf'/%3E%3Cstop offset='0.78' stop-color='%23e0a163'/%3E%3Cstop offset='0.9' stop-color='%23c96969'/%3E%3Cstop offset='1' stop-color='%237d3f6d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='6' fill='%23060708'/%3E%3Crect x='4' y='14' width='24' height='4' rx='2' fill='url(%23g)'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,800;0,900;1,900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- 光线粒子画布 -->
+  <canvas id="lightCanvas" aria-hidden="true"></canvas>
+
+  <!-- 加载动画 -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <div class="loader__band"></div>
+      <div class="loader__name">光线</div>
+      <div class="loader__tip">LIGHTRAY</div>
+    </div>
+  </div>
+
+  <!-- 顶部导航 -->
+  <header class="topbar" id="topbar">
+    <a class="topbar__logo" href="#hero" data-scroll>
+      <span class="topbar__dot"></span>
+      <span class="topbar__word">光线<span class="topbar__word-en">LIGHTRAY</span></span>
+    </a>
+    <button class="topbar__menu" id="menuBtn" aria-label="打开菜单">
+      <span class="topbar__menu-label">MENU</span>
+      <span class="topbar__burger"><i></i><i></i><i></i></span>
+    </button>
+  </header>
+
+  <!-- 全屏菜单 -->
+  <nav class="menubox" id="menubox" aria-hidden="true">
+    <div class="menubox__grid"></div>
+    <div class="menubox__content">
+      <ul class="menubox__list" id="menuList"><!-- JS 注入 --></ul>
+      <div class="menubox__foot">
+        <span class="menubox__foot-en" id="menuFootEn"></span>
+        <span class="menubox__foot-zh" id="menuFootZh"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero__rays" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <p class="hero__eyebrow" data-reveal>INDIE GAME CLUB · EST. <span id="heroFounded"></span></p>
+        <h1 class="hero__title" data-reveal>
+          <span class="hero__title-zh" id="heroName">光线</span>
+          <span class="hero__title-en" id="heroNameEn">LIGHT RAY</span>
+        </h1>
+        <p class="hero__slogan" data-reveal>
+          <span id="heroSlogan">以光为笔，创造世界</span>
+          <em id="heroSloganEn">CRAFT WORLDS WITH LIGHT</em>
+        </p>
+        <div class="hero__cta" data-reveal>
+          <a class="btn btn--ghost" href="#intro" data-scroll>进入社团 <span>→</span></a>
+          <a class="btn btn--ghost" href="#works" data-scroll>查看作品</a>
+        </div>
+        <div class="hero__scroll" aria-hidden="true">
+          <span>SCROLL</span>
+          <i></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. 社团简介 -->
+    <section class="section section--intro" id="intro">
+      <header class="section__head">
+        <span class="section__num">01</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>ABOUT</span>
+          <span class="section__title-zh">社团简介</span>
+        </h2>
+      </header>
+      <div class="section__body intro">
+        <p class="intro__lead" data-reveal id="introLead"></p>
+        <div class="intro__paras" id="introParas"></div>
+        <div class="intro__stats" id="introStats"></div>
+        <div class="intro__focus" id="introFocus"></div>
+      </div>
+    </section>
+
+    <!-- 2. 社团时间线 -->
+    <section class="section section--timeline" id="timeline">
+      <header class="section__head">
+        <span class="section__num">02</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>TIMELINE</span>
+          <span class="section__title-zh">社团时间线</span>
+        </h2>
+      </header>
+      <div class="section__body timeline" id="timelineList"></div>
+    </section>
+
+    <!-- 3. 社团作品展示 -->
+    <section class="section section--works" id="works">
+      <header class="section__head">
+        <span class="section__num">03</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>WORKS</span>
+          <span class="section__title-zh">社团作品展示</span>
+        </h2>
+      </header>
+      <div class="section__body works" id="worksList"></div>
+    </section>
+
+    <!-- 4. 社团知识库 -->
+    <section class="section section--knowledge" id="knowledge">
+      <header class="section__head">
+        <span class="section__num">04</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>KNOWLEDGE</span>
+          <span class="section__title-zh">社团知识库</span>
+        </h2>
+      </header>
+      <div class="section__body knowledge" id="knowledgeList"></div>
+    </section>
+
+    <!-- 5. 游戏开发活动收录 -->
+    <section class="section section--activities" id="activities">
+      <header class="section__head">
+        <span class="section__num">05</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>ACTIVITIES</span>
+          <span class="section__title-zh">游戏开发活动收录</span>
+        </h2>
+      </header>
+      <div class="section__body activities" id="activitiesList"></div>
+    </section>
+
+    <!-- 6. 游戏行业资讯 -->
+    <section class="section section--news" id="news">
+      <header class="section__head">
+        <span class="section__num">06</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>NEWS</span>
+          <span class="section__title-zh">游戏行业资讯</span>
+        </h2>
+      </header>
+      <div class="section__body news" id="newsList"></div>
+    </section>
+
+    <!-- 7. 社团分享 -->
+    <section class="section section--shares" id="shares">
+      <header class="section__head">
+        <span class="section__num">07</span>
+        <h2 class="section__title">
+          <span class="section__title-en" data-outline>SHARING</span>
+          <span class="section__title-zh">社团分享</span>
+        </h2>
+      </header>
+      <div class="section__body shares" id="sharesList"></div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer" id="footer">
+      <div class="footer__big" data-outline>LIGHT RAY</div>
+      <div class="footer__meta">
+        <div class="footer__club">
+          <strong id="footName"></strong>
+          <span id="footSlogan"></span>
+        </div>
+        <div class="footer__social" id="footSocial"></div>
+        <div class="footer__contact">
+          <span id="footLocation"></span>
+          <a id="footEmail" href=""></a>
+        </div>
+      </div>
+      <p class="footer__copy">© <span id="footYear"></span> <span id="footCopy"></span> · 以光为笔，创造世界</p>
+    </footer>
+  </main>
+
+  <!-- 自定义光标 -->
+  <div class="cursor" id="cursor" aria-hidden="true"><i></i></div>
+
+  <script src="js/content.js"></script>
+  <script src="js/articles.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

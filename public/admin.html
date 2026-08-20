@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>光线 · 内容管理后台</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <!-- 登录界面 -->
+  <div class="login" id="login">
+    <form class="login__box" id="loginForm">
+      <div class="login__logo">光线<span>LIGHTRAY</span></div>
+      <h1>内容管理后台</h1>
+      <p class="login__tip">请输入管理员密码登录</p>
+      <input type="password" id="password" placeholder="管理员密码" autocomplete="current-password" required />
+      <button type="submit" class="btn-primary">登 录</button>
+      <div class="err" id="loginError"></div>
+    </form>
+  </div>
+
+  <!-- 后台主界面 -->
+  <div class="app" id="app" hidden>
+    <header class="app__bar">
+      <div class="app__brand">光线 · 内容管理后台</div>
+      <div class="app__actions">
+        <span class="app__state" id="saveState"></span>
+        <button class="btn-primary" id="saveBtn">保存全部</button>
+        <button class="btn-ghost" id="logoutBtn">退出登录</button>
+      </div>
+    </header>
+
+    <nav class="app__tabs">
+      <button class="app__tab is-active" data-view="timeline">时间线</button>
+      <button class="app__tab" data-view="articles">文章</button>
+      <button class="app__tab" data-view="about">站点信息</button>
+    </nav>
+
+    <main class="app__main">
+      <!-- 时间线 -->
+      <section class="view" id="view-timeline">
+        <div class="view__head">
+          <h2>社团时间线</h2>
+          <button class="btn-primary" id="addTimelineBtn">+ 新增时间线</button>
+        </div>
+        <p class="view__hint">按时间倒序/正序展示；每项包含日期、标题、正文与可选图片地址。拖动右侧「上移/下移」调整顺序。</p>
+        <div class="tl-list" id="timelineList"></div>
+      </section>
+
+      <!-- 文章 -->
+      <section class="view" id="view-articles" hidden>
+        <div class="view__head">
+          <h2>知识库 / 文章</h2>
+          <button class="btn-primary" id="addArticleBtn">+ 新增文章</button>
+        </div>
+        <p class="view__hint">正文使用简易语法：空行分段；以「## 」开头的行是章节小标题；用 ``` 包起来的是代码块。保存后前台首页与阅读弹窗即时更新。</p>
+        <div class="art-list" id="articleList"></div>
+      </section>
+
+      <!-- 站点信息 -->
+      <section class="view" id="view-about" hidden>
+        <div class="view__head"><h2>站点信息</h2></div>
+        <p class="view__hint">社团名称、口号、邮箱、社交链接等全局信息。</p>
+        <div class="form-grid" id="siteForm"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/content.js"></script>
+  <script src="js/articles.js"></script>
+  <script src="admin.js?v=20260819"></script>
+</body>
+</html>

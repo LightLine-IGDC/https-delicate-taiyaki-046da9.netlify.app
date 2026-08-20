@@ -1,0 +1,10 @@
+# dsh-vision-config bundle patch：注册识图服务、设置面板与模型自主识图工具
+- insert:
+    - id: vision-config-plugin
+      name: dsh-vision-config
+      inject:
+        - webServer
+        - credentials
+        - tools
+        - attachments
+        - settings

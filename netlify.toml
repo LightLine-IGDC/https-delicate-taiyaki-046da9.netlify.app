@@ -1,0 +1,22 @@
+# 光线独立游戏制作社团 · Netlify 配置
+# 纯静态站点，无构建步骤；后端为 Netlify Functions。
+
+[build]
+  command = ""
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# 把 /api/* 转发到对应的 Netlify Function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# 管理后台与首页直接访问
+[[redirects]]
+  from = "/admin"
+  to = "/admin.html"
+  status = 200
