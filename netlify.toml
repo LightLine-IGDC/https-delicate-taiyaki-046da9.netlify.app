@@ -1,22 +1,22 @@
 # 光线独立游戏制作社团 · Netlify 配置
-# 纯静态站点，无构建步骤；后端为 Netlify Functions。
+# 前台为纯静态；后台为 Vue SPA（admin-app），构建到 public/admin/ 子路径。
 
 [build]
-  command = ""
+  command = "cd admin-app && npm install && npm run build"
   publish = "public"
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# 把 /api/* 转发到对应的 Netlify Function
+# （可选）保留旧的无服务器函数路由；前台现已改从 Supabase 读取，此路由不再被使用
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
 
-# 管理后台与首页直接访问
+# 后台 SPA（hash 路由，无需深链回退）
 [[redirects]]
   from = "/admin"
-  to = "/admin.html"
-  status = 200
+  to = "/admin/"
+  status = 301

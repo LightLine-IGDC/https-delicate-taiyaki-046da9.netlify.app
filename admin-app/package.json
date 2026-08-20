@@ -1,0 +1,32 @@
+{
+  "name": "lightray-admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "光线独立游戏制作社团 · 内容管理后台（Vue3 + Element Plus + Supabase）",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@supabase/supabase-js": "^2.49.0",
+    "dompurify": "^3.2.4",
+    "element-plus": "^2.9.3",
+    "highlight.js": "^11.10.0",
+    "markdown-it": "^14.1.0",
+    "mammoth": "^1.8.0",
+    "pinia": "^2.2.6",
+    "turndown": "^7.2.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/turndown": "^5.0.5",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.6.3",
+    "vite": "^6.0.5"
+  }
+}

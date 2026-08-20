@@ -281,7 +281,10 @@
       var statusCls = w.status && (w.status.indexOf("开发") >= 0 || w.status.toLowerCase().indexOf("dev") >= 0) ? " work__status--dev" : "";
       var tags = (w.tags || []).map(function (t) { return '<span class="work__tag">' + esc(t) + "</span>"; }).join("");
       var links = (w.links || []).map(function (l) {
-        return '<a class="work__link" href="' + esc(l.url || "#") + '"' + (l.url ? ' target="_blank" rel="noopener"' : "") + ">" + esc(l.label) + "</a>";
+        var isPlay = (l.type || "download").toLowerCase() === "play";
+        var cls = isPlay ? "work__link work__link--play" : "work__link";
+        var icon = isPlay ? "▶ " : "⬇ ";
+        return '<a class="' + cls + '" href="' + esc(l.url || "#") + '"' + (l.url ? ' target="_blank" rel="noopener"' : "") + ">" + icon + esc(l.label) + "</a>";
       }).join("");
       return '<article class="work" data-reveal>' +
         '<div class="work__media">' + img +
@@ -316,10 +319,11 @@
     var cardsHtml = items.map(function (k) {
       var tags = (k.tags || []).map(function (t) { return '<span class="k-card__tag">' + esc(t) + "</span>"; }).join("");
       var hasArticle = !!(k.articleId && ARTICLES[k.articleId]);
+      var cover = hasArticle && ARTICLES[k.articleId].cover ? '<img class="k-card__cover" src="' + esc(ARTICLES[k.articleId].cover) + '" alt="" loading="lazy">' : "";
       var metaRight = hasArticle ? '<span class="k-card__more">阅读全文 →</span>' : '<span>' + esc(k.date || "") + "</span>";
       return '<article class="k-card' + (hasArticle ? " k-card--link" : "") + '"' +
         (hasArticle ? ' data-article-id="' + esc(k.articleId) + '"' : "") +
-        ' data-cat="' + esc(k.category || "其他") + '" data-reveal>' +
+        ' data-cat="' + esc(k.category || "其他") + '" data-reveal>' + cover +
         '<div class="k-card__cat">' + esc(k.category || "") + "</div>" +
         '<h3 class="k-card__title">' + esc(k.title) + "</h3>" +
         '<p class="k-card__desc">' + esc(k.desc) + "</p>" +
@@ -374,11 +378,12 @@
   function renderShares() {
     var html = (DATA.shares || []).map(function (s) {
       var hasArticle = !!(s.articleId && ARTICLES[s.articleId]);
+      var cover = hasArticle && ARTICLES[s.articleId].cover ? '<img class="share-card__cover" src="' + esc(ARTICLES[s.articleId].cover) + '" alt="" loading="lazy">' : "";
       var link = hasArticle ? '<span class="share-card__link">阅读全文 →</span>'
         : (s.link ? '<a class="share-card__link" href="' + esc(s.link) + '" target="_blank" rel="noopener">查看分享 →</a>' : "");
       return '<article class="share-card' + (hasArticle ? " share-card--link" : "") + '"' +
         (hasArticle ? ' data-article-id="' + esc(s.articleId) + '"' : "") + ' data-reveal>' +
-        '<span class="share-card__topic">' + esc(s.topic || "") + "</span>" +
+        '<span class="share-card__topic">' + esc(s.topic || "") + "</span>" + cover +
         '<div class="share-card__meta"><span class="share-card__author">' + esc(s.author || "") + '</span><span>' + esc(s.date || "") + "</span></div>" +
         '<h3 class="share-card__title">' + esc(s.title) + "</h3>" +
         '<p class="share-card__desc">' + esc(s.desc) + "</p>" + link +
@@ -419,12 +424,19 @@
       $("#readerTitle").textContent = article.title || "";
       $("#readerAuthor").textContent = article.author || "";
       $("#readerDate").textContent = article.date || "";
-      var bodyHtml = (article.body || []).map(function (b) {
-        if (b.t === "h") return '<h4 class="reader__h">' + esc(b.text) + "</h4>";
-        if (b.t === "code") return '<pre class="reader__code"><code>' + esc(b.text) + "</code></pre>";
-        return '<p class="reader__p">' + esc(b.text) + "</p>";
-      }).join("");
-      $("#readerBody").innerHTML = bodyHtml;
+      var bodyHtml = "";
+      if (article.body_html) {
+        // 后台保存的预渲染 HTML（已在后台用 DOMPurify 消毒）
+        bodyHtml = '<div class="reader__html">' + article.body_html + "</div>";
+      } else {
+        bodyHtml = (article.body || []).map(function (b) {
+          if (b.t === "h") return '<h4 class="reader__h">' + esc(b.text) + "</h4>";
+          if (b.t === "code") return '<pre class="reader__code"><code>' + esc(b.text) + "</code></pre>";
+          return '<p class="reader__p">' + esc(b.text) + "</p>";
+        }).join("");
+      }
+      var coverHtml = article.cover ? '<img class="reader__cover" src="' + esc(article.cover) + '" alt="" loading="lazy">' : "";
+      $("#readerBody").innerHTML = coverHtml + bodyHtml;
       reader.classList.add("is-open");
       reader.setAttribute("aria-hidden", "false");
       document.body.classList.add("is-reader-open");
@@ -467,21 +479,33 @@
     initReveal();
   }
 
-  /* 从后端拉取管理员保存过的内容，覆盖本地默认值后重新渲染 */
+  /* 从 Supabase 拉取管理员保存过的内容，覆盖本地默认值后重新渲染 */
   function loadRemoteContent() {
-    fetch("/api/content", { headers: { "Accept": "application/json" } })
-      .then(function (r) {
-        if (!r.ok) return null;
-        return r.json();
-      })
-      .then(function (res) {
-        if (res && res.data && typeof res.data === "object") {
-          DATA = res.data || DATA;
-          ARTICLES = res.articles || ARTICLES;
-          renderAll();
+    var cfg = window.SUPABASE_CONFIG;
+    if (!cfg || !cfg.url || !cfg.anonKey || cfg.url.indexOf(".supabase.co") < 0) return; // 未配置则保持默认内容
+    var base = cfg.url.replace(/\/+$/, "");
+    var headers = { "apikey": cfg.anonKey, "Authorization": "Bearer " + cfg.anonKey };
+    Promise.all([
+      fetch(base + "/rest/v1/content?select=data&id=eq.main", { headers: headers }),
+      fetch(base + "/rest/v1/articles?select=*", { headers: headers })
+    ]).then(function (responses) {
+      return Promise.all(responses.map(function (r) { return r.ok ? r.json() : null; }));
+    }).then(function (results) {
+      var contentRows = results[0];
+      var articleRows = results[1];
+      var remoteData = (contentRows && contentRows.length && contentRows[0].data) ? contentRows[0].data : null;
+      if (remoteData && typeof remoteData === "object") {
+        for (var k in remoteData) {
+          if (Object.prototype.hasOwnProperty.call(remoteData, k)) DATA[k] = remoteData[k];
         }
-      })
-      .catch(function () { /* 接口不可用时保持本地默认内容 */ });
+      }
+      if (articleRows && articleRows.length) {
+        var articles = {};
+        articleRows.forEach(function (a) { articles[a.id] = a; });
+        ARTICLES = articles;
+      }
+      renderAll();
+    }).catch(function () { /* 接口不可用时保持本地默认内容 */ });
   }
 
   /* ---------- 启动 ---------- */

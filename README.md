@@ -2,59 +2,59 @@
 
 「以光为笔，创造世界」—— 社团官方网站，高级黑白 + 光谱渐变（白光色散）视觉风格，交互参考 [jiejoe.com](https://www.jiejoe.com) 的设计语言。
 
-## 如何运行
+## 架构
 
-纯静态站点，**无需构建**，直接双击 `public/index.html` 即可在浏览器中打开；也可以起本地服务：
+- **前台** `public/`：纯静态，打开即渲染内置默认内容，同时从 Supabase 拉取后台保存的最新内容（拉不到时自动回退默认，不白屏）。
+- **后台** `admin-app/`：Vue3 + Vite + Element Plus，构建到 `public/admin/`；登录后在线编辑 **站点信息 + 7 个内容模块 + 文章 + 媒体库**。
+- **后端** Supabase：Postgres + Storage（图片）+ Auth（登录）。详见 **[SUPABASE.md](./SUPABASE.md)** 与 **[DEPLOY.md](./DEPLOY.md)**。
+
+## 如何本地运行
 
 ```bash
-# 方式一：Python（在 public 目录下）
+# 前台（无需构建，直接打开或起静态服务）
 cd public && python -m http.server 8000
 
-# 方式二：Node（任意静态服务器）
-npx serve public
+# 后台（需先配 admin-app/.env 与 Supabase）
+cd admin-app && npm install && npm run dev     # http://localhost:5173
 ```
 
-> 说明：站内没有请求本地数据（默认内容全部内联在 `public/js/content.js`），所以直接 `file://` 打开也能完整显示。
-> 唯一的外部依赖是 Google Fonts 字体，离线时会自动回退到系统字体，不影响使用。
+> 前台未配置 Supabase 时，会显示 `public/js/content.js` + `articles.js` 里的默认内容，开箱即用。
 
 ## 目录结构
 
 ```
-├── public/                 ★ 站点源码（部署时只发布这个目录）
+├── public/                 ★ 前台（部署时发布这个目录）
 │   ├── index.html          首页（加载动画 / 全屏菜单 / 7 个模块）
-│   ├── admin.html          管理后台（登录 + 在线编辑时间线 / 文章 / 站点信息）
-│   ├── admin.css / admin.js
 │   ├── css/style.css       全部样式（光线视觉系统）
 │   └── js/
-│       ├── content.js      ★ 全站内容配置（默认内容，改这里可直接更新）
-│       ├── articles.js     ★ 知识库/分享的完整文章正文（默认内容）
-│       └── main.js         交互与渲染逻辑（一般无需改动）
-├── netlify/functions/      后端无服务器函数（登录鉴权 + 内容读写）
-├── netlify.toml            Netlify 部署配置（发布目录 = public）
-└── package.json            依赖（@netlify/blobs）
+│       ├── config.js       Supabase 读取配置（url + anon key，公开）
+│       ├── content.js      默认内容（站点 + 7 模块，兜底）
+│       ├── articles.js     默认文章正文（兜底）
+│       └── main.js         交互与渲染逻辑
+├── admin-app/              ★ 后台（Vue3 SPA，构建产物输出到 public/admin/）
+│   ├── src/
+│   │   ├── config/modules.ts   8 个模块的字段 schema（驱动通用编辑器）
+│   │   ├── views/              登录 / 模块编辑 / 文章 / 媒体库
+│   │   ├── components/         布局 / 字段渲染器 / Markdown 编辑器 / 图片上传
+│   │   ├── api/ + lib/         Supabase 客户端、内容/文章/媒体读写、导入器
+│   │   └── scripts/seed.mjs    种子脚本（把默认内容导入 Supabase）
+│   └── package.json
+├── supabase/schema.sql     ★ 建表 + RLS + 存储桶（一次性执行）
+├── netlify.toml            Netlify 部署配置（构建后台 + 发布 public）
+└── package.json            根依赖
 ```
-
-## 部署上线（人人可访问）
-
-已支持 **Netlify 部署 + 后台在线编辑**。完整步骤见 **[DEPLOY.md](./DEPLOY.md)**，核心三步：
-
-1. 用 GitHub 仓库导入（或 Netlify CLI 部署），发布目录设为 `public`；
-2. 配置环境变量 `ADMIN_PASSWORD`（登录密码）、`ADMIN_TOKEN_SECRET`（令牌密钥）；
-3. 访问 `你的域名/admin` 登录后台，在线编辑时间线与文章并保存。
 
 ## 如何更新内容
 
-有两种方式：
-
-1. **在线后台（推荐，无需改代码）**：访问 `/admin` 登录后编辑，保存即生效。
-2. **直接改文件**：所有默认文案、图片、链接都在 **`public/js/content.js`**（文章正文在 `public/js/articles.js`）中，按模块分组，直接编辑即可，无需改动其它代码。
+1. **在线后台（推荐）**：访问 `/admin` 登录，编辑 7 个模块 / 文章 / 图片，点「保存」，前台刷新即生效。
+2. **直接改文件（兜底）**：默认文案在 `public/js/content.js`、文章正文在 `public/js/articles.js`。
 
 ```js
 window.CLUB_DATA = {
-  site: { ... },        // 社团名称、口号、邮箱、社交链接
+  site: { ... },        // 站点信息
   intro: { ... },       // 1. 社团简介
   timeline: [ ... ],    // 2. 社团时间线（图文）
-  works: [ ... ],       // 3. 社团作品展示（图文 + 链接）
+  works: [ ... ],       // 3. 社团作品展示（封面 + 下载/游玩链接）
   knowledge: [ ... ],   // 4. 社团知识库
   activities: [ ... ],  // 5. 游戏开发活动收录
   news: [ ... ],        // 6. 游戏行业资讯
@@ -66,29 +66,19 @@ window.CLUB_DATA = {
 
 | 字段 | 说明 |
 | --- | --- |
-| `image` / `cover` | 图片地址。留 `""` 时自动使用内置「光线」占位图；填 `images/xxx.png` 或 `https://...` 即替换为真实图片 |
-| `link` / `links` | 跳转地址，留 `""` 表示暂无链接（页面会显示“敬请期待”） |
-| 数组项 | 每个模块都是数组，**按顺序渲染**；增删数组项即可增删内容 |
-
-### 替换图片示例
-
-```js
-// 作品封面：把空字符串换成你的图片
-{ name: "光尘 Lumen Dust", cover: "images/lumen-dust.jpg", ... }
-```
-
-把图片文件放进新建的 `public/images/` 目录即可。目前站点**不依赖任何外部图片**，全部用代码生成的占位图，开箱即用。
+| `image` / `cover` | 图片地址。留 `""` 时自动用内置「光线」占位图；可填上传后的图片 URL |
+| `links`（作品） | 数组，每项含 `type`（`download` 下载 / `play` 游玩）、`label`、`url` |
+| `articleId`（知识库/分享） | 关联文章的 id，后台用下拉选择；有值时卡片可点击阅读全文 |
 
 ## 设计说明
 
 - **配色**：背景 `#060708`（高级黑），主色 `#ffffff`（高级白）。
-- **光谱渐变**：对应 logo 色带——深绿 → 深蓝 → 浅蓝 → 白 → 淡黄 → 橙 → 红 → 暗紫（白光经棱镜色散的物理颜色组成）。以细线、色带、辉光等「些许渐变」方式点缀，不喧宾夺主。
-- **光线元素**：Hero 旋转光束、漂浮光粒子画布（柔白微光谱）、光标光晕跟随、卡片悬停辉光。
-- **交互**：全屏上滑菜单（大号描边英文 + 竖排中文标签 + 光谱下划线）、滚动显现动画、加载动画（光谱色带展开）。
+- **光谱渐变**：对应 logo 色带——深绿 → 深蓝 → 浅蓝 → 白 → 淡黄 → 橙 → 红 → 暗紫（白光经棱镜色散）。
+- **光线元素**：Hero 旋转光束、漂浮光粒子画布、光标光晕跟随、卡片悬停辉光。
 - **响应式**：桌面 / 平板 / 手机自适应；`prefers-reduced-motion` 下自动关闭动画。
 
 ## 备注
 
-- 站点内容已按工作区内的社团 PDF 文档填充（社团简介、时间线、作品收录、知识库、活动收录、成员分享），默认数据内联在 `public/js/content.js` 与 `public/js/articles.js` 中。
-- 社团时间线已按原文压缩为关键节点；社团游戏收录表为图片型 PDF，作品清单经 OCR 整理。
-- 修改 `public/js/content.js` 后刷新浏览器即可看到效果（部署上线后，以后台在线编辑为准）。
+- 站点内容已按工作区内的社团 PDF 文档填充；默认数据内联在 `public/js/content.js` 与 `articles.js` 中。
+- 社团时间线已压缩为关键节点；作品清单经 OCR 整理。
+- 上线后以后台在线编辑为准；默认文件仅作兜底与首次种子导入的来源。

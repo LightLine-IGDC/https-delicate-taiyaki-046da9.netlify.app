@@ -2,10 +2,12 @@
   "name": "lightray-club-site",
   "version": "1.0.0",
   "private": true,
-  "description": "哈尔滨理工大学光线独立游戏制作社团官网（含 Netlify Functions 后台）",
+  "description": "哈尔滨理工大学光线独立游戏制作社团官网（前台静态 + Vue3 后台 + Supabase）",
   "scripts": {
     "dev": "netlify dev",
-    "build": "node -e \"console.log('static site, no build needed')\""
+    "build": "cd admin-app && npm run build",
+    "build:admin": "cd admin-app && npm install && npm run build",
+    "seed": "node admin-app/scripts/seed.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.0.1"

@@ -2,3 +2,9 @@ node_modules/
 .netlify/
 .env
 .DS_Store
+
+# 后台构建产物（由 admin-app 构建生成到 public/admin）
+public/admin/
+
+# 本地 npm 缓存（沙箱环境下指定到工作区内）
+.npm-cache/
