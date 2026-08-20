@@ -6,6 +6,6 @@
  *  （Supabase Dashboard → Project Settings → API）。
  * ============================================================ */
 window.SUPABASE_CONFIG = {
-  url: "https://YOUR-PROJECT-REF.supabase.co",
-  anonKey: "YOUR-ANON-PUBLIC-KEY"
+  url: "https://envnuwpiqolslhghudef.supabase.co",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVudm51d3BpcW9sc2xoZ2h1ZGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM1MTAsImV4cCI6MjEwMjc5OTUxMH0.O0ohAAfg4vY1glFU_Q_ez5R-ZwG502Sb4RswlnUOJKI"
 };

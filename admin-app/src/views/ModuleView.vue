@@ -56,10 +56,14 @@ function itemLabel(item: Record<string, unknown>, i: number): string {
 }
 
 const objectFields = computed(() => def.value?.fields ?? [])
-const objectData = computed(() => (def.value?.kind === 'object' ? (data.value as Record<string, unknown>) : null))
-const collectionData = computed(() =>
-  def.value?.kind === 'collection' ? (data.value as Record<string, unknown>[]) : [],
-)
+const objectData = computed(() => {
+  const v = def.value?.kind === 'object' ? data.value : null
+  return v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, unknown>) : null
+})
+const collectionData = computed(() => {
+  const v = def.value?.kind === 'collection' ? data.value : null
+  return Array.isArray(v) ? (v as Record<string, unknown>[]) : []
+})
 </script>
 
 <template>

@@ -67,8 +67,24 @@ async function logout() {
 }
 .menu {
   border-right: none;
-  background: transparent;
   flex: 1;
+  --el-menu-bg-color: transparent;
+  --el-menu-text-color: #c7ccd1;
+  --el-menu-hover-text-color: #ffffff;
+  --el-menu-hover-bg-color: rgba(255, 255, 255, 0.06);
+  --el-menu-active-color: #ffffff;
+}
+.menu :deep(.el-menu-item-group__title) {
+  color: #6b7280;
+  padding-left: 16px;
+}
+.menu :deep(.el-menu-item) {
+  margin: 2px 8px;
+  border-radius: 6px;
+}
+.menu :deep(.el-menu-item.is-active) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
 }
 .header {
   display: flex;

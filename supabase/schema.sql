@@ -113,3 +113,20 @@ create policy media_bucket_auth_update on storage.objects
 drop policy if exists media_bucket_auth_delete on storage.objects;
 create policy media_bucket_auth_delete on storage.objects
   for delete using (bucket_id = 'media' and auth.role() = 'authenticated');
+
+-- ============================================================
+--  表级权限（关键！SQL Editor 建表不会自动授权给 anon/authenticated）
+--  访客(anon)只读；登录管理员(authenticated)可增删改；service_role 全权限
+-- ============================================================
+grant usage on schema public to anon, authenticated, service_role;
+
+grant select on public.content to anon;
+grant select, insert, update, delete on public.content to authenticated;
+
+grant select on public.articles to anon;
+grant select, insert, update, delete on public.articles to authenticated;
+
+grant select on public.media to anon;
+grant select, insert, update, delete on public.media to authenticated;
+
+grant select, insert, update, delete on public.content, public.articles, public.media to service_role;
