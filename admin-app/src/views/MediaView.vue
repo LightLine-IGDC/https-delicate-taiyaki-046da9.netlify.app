@@ -98,7 +98,7 @@ async function del(item: MediaItem) {
   margin: 0;
 }
 .desc {
-  color: #6b7280;
+  color: #92989f;
   font-size: 13px;
   margin: 6px 0 0;
 }
@@ -119,7 +119,7 @@ async function del(item: MediaItem) {
 }
 .cell__name {
   font-size: 12px;
-  color: #6b7280;
+  color: #92989f;
   margin: 8px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -130,10 +130,10 @@ async function del(item: MediaItem) {
   gap: 6px;
 }
 .empty {
-  color: #6b7280;
+  color: #92989f;
   padding: 40px;
   text-align: center;
-  background: #fff;
+  background: #101215;
   border-radius: 10px;
 }
 </style>

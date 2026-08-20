@@ -85,7 +85,7 @@ async function del(a: Article) {
   margin: 0;
 }
 .desc {
-  color: #6b7280;
+  color: #92989f;
   font-size: 13px;
   margin: 6px 0 0;
 }
@@ -93,7 +93,7 @@ async function del(a: Article) {
   border-radius: 10px;
 }
 .title {
-  color: #2e4f7f;
+  color: #74aecd;
   cursor: pointer;
 }
 </style>

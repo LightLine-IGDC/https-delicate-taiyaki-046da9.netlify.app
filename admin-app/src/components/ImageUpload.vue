@@ -73,7 +73,7 @@ function handleChange(uploadFile: { raw?: File }) {
 }
 .preview {
   position: relative;
-  border: 1px solid #e4e6e9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   overflow: hidden;
 }

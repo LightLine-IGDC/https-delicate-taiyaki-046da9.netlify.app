@@ -138,7 +138,7 @@ const collectionData = computed(() => {
   margin: 0;
 }
 .desc {
-  color: #6b7280;
+  color: #92989f;
   font-size: 13px;
   margin: 6px 0 0;
 }
@@ -160,7 +160,7 @@ const collectionData = computed(() => {
   justify-content: space-between;
   margin-bottom: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eef0f2;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .item__ops {
   display: flex;
@@ -171,10 +171,10 @@ const collectionData = computed(() => {
   margin-top: 4px;
 }
 .empty {
-  color: #6b7280;
+  color: #92989f;
   padding: 40px;
   text-align: center;
-  background: #fff;
+  background: #101215;
   border-radius: 10px;
 }
 @media (max-width: 720px) {

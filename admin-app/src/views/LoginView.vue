@@ -68,7 +68,7 @@ async function submit() {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at 50% 30%, #ffffff, #e9ebee);
+  background: radial-gradient(circle at 50% 30%, #1b1d20, #060708);
   padding: 24px;
 }
 .login__card {
@@ -85,7 +85,7 @@ async function submit() {
   font-family: 'Archivo', 'Helvetica Neue', sans-serif;
   font-size: 11px;
   letter-spacing: 0.4em;
-  color: #6b7280;
+  color: #92989f;
   margin-left: 10px;
   font-weight: 800;
 }
@@ -94,7 +94,7 @@ h1 {
   font-weight: 800;
 }
 .login__tip {
-  color: #6b7280;
+  color: #92989f;
   margin: 4px 0 18px;
 }
 .login__btn {

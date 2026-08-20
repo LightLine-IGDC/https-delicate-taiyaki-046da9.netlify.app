@@ -41,10 +41,11 @@ function set(v: string) {
   min-height: 560px;
 }
 .md-editor__preview {
-  border: 1px solid #e4e6e9;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 20px 24px;
-  background: #fff;
+  background: #101215;
+  color: #e6e8eb;
   overflow: auto;
   max-height: 720px;
 }
@@ -78,10 +79,10 @@ function set(v: string) {
   font-family: 'Consolas', 'Menlo', monospace;
 }
 .markdown-body :deep(blockquote) {
-  border-left: 3px solid #2e4f7f;
+  border-left: 3px solid #74aecd;
   margin: 0.8em 0;
   padding-left: 12px;
-  color: #6b7280;
+  color: #92989f;
 }
 .markdown-body :deep(ul),
 .markdown-body :deep(ol) {
@@ -89,7 +90,7 @@ function set(v: string) {
   margin: 0.6em 0;
 }
 .markdown-body :deep(a) {
-  color: #2e4f7f;
+  color: #74aecd;
 }
 .markdown-body :deep(img) {
   max-width: 100%;

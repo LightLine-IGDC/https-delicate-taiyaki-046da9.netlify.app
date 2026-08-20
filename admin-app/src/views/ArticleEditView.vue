@@ -197,7 +197,7 @@ async function onLinkImport() {
   margin: 0;
 }
 .desc {
-  color: #6b7280;
+  color: #92989f;
   font-size: 13px;
   margin: 6px 0 0;
 }
@@ -214,13 +214,13 @@ async function onLinkImport() {
   flex-wrap: wrap;
   gap: 10px;
   padding: 12px 14px;
-  background: #f7f8f9;
+  background: #101215;
   border-radius: 8px;
   margin-bottom: 18px;
 }
 .importbar__label {
   font-size: 13px;
-  color: #6b7280;
+  color: #92989f;
   font-weight: 600;
 }
 .importbar__link {

@@ -48,11 +48,12 @@ async function logout() {
 <style scoped>
 .layout {
   height: 100vh;
+  background: #0a0b0c;
 }
 .aside {
-  background: #0c0d0f;
-  color: #e6e7e9;
-  border-right: 1px solid #26282c;
+  background: #060708;
+  color: #f4f5f6;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
 }
@@ -60,45 +61,58 @@ async function logout() {
   height: 60px;
   display: flex;
   align-items: center;
+  gap: 10px;
   padding: 0 20px;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.04em;
-  border-bottom: 1px solid #26282c;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.brand::before {
+  content: "";
+  width: 26px;
+  height: 4px;
+  border-radius: 2px;
+  flex: none;
+  background: linear-gradient(90deg, #2f5c47, #2e4f7f, #74aecd, #ffffff, #ecdfaf, #e0a163, #c96969, #7d3f6d);
 }
 .menu {
   border-right: none;
   flex: 1;
   --el-menu-bg-color: transparent;
-  --el-menu-text-color: #c7ccd1;
+  --el-menu-text-color: #a8adb3;
   --el-menu-hover-text-color: #ffffff;
   --el-menu-hover-bg-color: rgba(255, 255, 255, 0.06);
   --el-menu-active-color: #ffffff;
 }
 .menu :deep(.el-menu-item-group__title) {
-  color: #6b7280;
-  padding-left: 16px;
+  color: #6f767e;
+  padding-left: 18px;
 }
 .menu :deep(.el-menu-item) {
-  margin: 2px 8px;
+  margin: 2px 10px;
   border-radius: 6px;
+  height: 40px;
+  line-height: 40px;
 }
 .menu :deep(.el-menu-item.is-active) {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
+  box-shadow: inset 3px 0 0 #ffffff;
 }
 .header {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 14px;
-  background: #fff;
-  border-bottom: 1px solid #e4e6e9;
+  background: #0a0b0c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 .user {
-  color: #6b7280;
+  color: #92989f;
   font-size: 13px;
 }
 .main {
-  background: #f4f5f6;
+  background: #0a0b0c;
 }
 </style>
