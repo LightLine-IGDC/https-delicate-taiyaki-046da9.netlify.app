@@ -7,7 +7,8 @@
     "dev": "netlify dev",
     "build": "cd admin-app && npm run build",
     "build:admin": "cd admin-app && npm install && npm run build",
-    "seed": "node admin-app/scripts/seed.mjs"
+    "seed": "node admin-app/scripts/seed.mjs",
+    "test": "node admin-app/scripts/verify-admin-redesign.mjs"
   },
   "dependencies": {
     "@netlify/blobs": "^11.0.1"

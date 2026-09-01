@@ -1,0 +1,186 @@
+:root {
+  --ray-bg: #060708;
+  --ray-bg-2: #080a0d;
+  --ray-panel: #0d1013;
+  --ray-panel-2: #101418;
+  --ray-panel-3: #151c22;
+  --ray-line: rgba(255, 255, 255, 0.1);
+  --ray-line-strong: rgba(255, 255, 255, 0.18);
+  --ray-text: #f6f7f8;
+  --ray-muted: #9fa8b1;
+  --ray-dim: #6f7881;
+  --ray-blue: #74aecd;
+  --ray-warm: #e0a163;
+  --ray-red: #c96969;
+  --ray-violet: #7d3f6d;
+  --ray-radius: 8px;
+  --ray-spectrum: linear-gradient(
+    90deg,
+    #2f5c47,
+    #2e4f7f,
+    #74aecd,
+    #ffffff,
+    #ecdfaf,
+    #e0a163,
+    #c96969,
+    #7d3f6d
+  );
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+  background: var(--ray-bg);
+}
+
+body {
+  color: var(--ray-text);
+  font-family:
+    "Noto Sans SC",
+    "Microsoft YaHei",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+.ray-card,
+.el-card {
+  --el-card-bg-color: var(--ray-panel);
+  --el-card-border-color: var(--ray-line);
+  --el-card-border-radius: var(--ray-radius);
+  border-color: var(--ray-line) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0)),
+    var(--ray-panel) !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+
+.el-button {
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.el-button--primary {
+  --el-button-bg-color: transparent;
+  --el-button-border-color: rgba(255, 255, 255, 0.22);
+  --el-button-hover-border-color: rgba(255, 255, 255, 0.36);
+  --el-button-active-border-color: rgba(255, 255, 255, 0.5);
+  color: #060708;
+  border: none;
+  background: var(--ray-spectrum);
+  box-shadow: 0 10px 30px rgba(116, 174, 205, 0.12);
+}
+
+.el-button--primary:hover,
+.el-button--primary:focus {
+  color: #060708;
+  filter: brightness(1.07);
+}
+
+.el-button.is-text {
+  color: var(--ray-muted);
+}
+
+.el-input,
+.el-textarea,
+.el-select {
+  width: 100%;
+}
+
+.el-input__wrapper,
+.el-textarea__inner {
+  --el-input-bg-color: #07090b;
+  --el-input-border-color: rgba(255, 255, 255, 0.08);
+  --el-input-hover-border-color: rgba(116, 174, 205, 0.42);
+  --el-input-focus-border-color: #74aecd;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px var(--el-input-border-color) inset;
+}
+
+.el-textarea__inner {
+  min-height: 88px !important;
+}
+
+.el-form-item {
+  margin-bottom: 18px;
+}
+
+.el-form-item__label {
+  color: var(--ray-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.el-table {
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: #101418;
+  --el-table-header-text-color: #f6f7f8;
+  --el-table-text-color: #c8d0d8;
+  --el-table-border-color: rgba(255, 255, 255, 0.08);
+  --el-table-row-hover-bg-color: rgba(116, 174, 205, 0.08);
+}
+
+.el-upload-dragger {
+  border-radius: var(--ray-radius);
+  border-color: var(--ray-line);
+  background: #0a0d10;
+}
+
+.admin-page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.admin-page-head h2 {
+  margin: 0;
+  color: var(--ray-text);
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.admin-page-head__eyebrow {
+  margin: 0 0 8px;
+  color: var(--ray-blue);
+  font-family: Inter, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-page-head__desc {
+  max-width: 680px;
+  margin: 8px 0 0;
+  color: var(--ray-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.spectrum-line {
+  display: block;
+  width: 76px;
+  height: 4px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  background: var(--ray-spectrum);
+}

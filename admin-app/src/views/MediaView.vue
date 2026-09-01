@@ -51,10 +51,12 @@ async function del(item: MediaItem) {
 
 <template>
   <div>
-    <div class="head">
+    <div class="admin-page-head">
       <div>
+        <span class="spectrum-line"></span>
+        <p class="admin-page-head__eyebrow">CONTENT LIBRARY / MEDIA</p>
         <h2>媒体库</h2>
-        <p class="desc">拖拽上传本地图片，上传后点击「复制 URL」即可粘贴到作品封面、时间线、文章等任意图片字段。</p>
+        <p class="admin-page-head__desc">拖拽上传本地图片，上传后点击「复制 URL」即可粘贴到作品封面、时间线、文章等任意图片字段。</p>
       </div>
     </div>
 
@@ -89,19 +91,6 @@ async function del(item: MediaItem) {
 </template>
 
 <style scoped>
-.head {
-  margin-bottom: 20px;
-}
-.head h2 {
-  font-size: 20px;
-  font-weight: 900;
-  margin: 0;
-}
-.desc {
-  color: #92989f;
-  font-size: 13px;
-  margin: 6px 0 0;
-}
 .drop {
   margin-bottom: 20px;
 }
@@ -119,7 +108,7 @@ async function del(item: MediaItem) {
 }
 .cell__name {
   font-size: 12px;
-  color: #92989f;
+  color: var(--ray-muted);
   margin: 8px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -130,10 +119,11 @@ async function del(item: MediaItem) {
   gap: 6px;
 }
 .empty {
-  color: #92989f;
+  color: var(--ray-muted);
   padding: 40px;
   text-align: center;
-  background: #101215;
-  border-radius: 10px;
+  background: var(--ray-panel);
+  border: 1px solid var(--ray-line);
+  border-radius: var(--ray-radius);
 }
 </style>

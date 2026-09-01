@@ -41,10 +41,12 @@ async function del(a: Article) {
 
 <template>
   <div>
-    <div class="head">
+    <div class="admin-page-head">
       <div>
+        <span class="spectrum-line"></span>
+        <p class="admin-page-head__eyebrow">CONTENT LIBRARY / ARTICLES</p>
         <h2>文章管理</h2>
-        <p class="desc">知识库 / 分享的正文。支持 Markdown、Word、链接三路导入。</p>
+        <p class="admin-page-head__desc">知识库 / 分享的正文。支持 Markdown、Word、链接三路导入。</p>
       </div>
       <el-button type="primary" @click="create">+ 新增文章</el-button>
     </div>
@@ -72,28 +74,12 @@ async function del(a: Article) {
 </template>
 
 <style scoped>
-.head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.head h2 {
-  font-size: 20px;
-  font-weight: 900;
-  margin: 0;
-}
-.desc {
-  color: #92989f;
-  font-size: 13px;
-  margin: 6px 0 0;
-}
 .panel {
-  border-radius: 10px;
+  overflow: hidden;
 }
 .title {
   color: #74aecd;
   cursor: pointer;
+  font-weight: 800;
 }
 </style>

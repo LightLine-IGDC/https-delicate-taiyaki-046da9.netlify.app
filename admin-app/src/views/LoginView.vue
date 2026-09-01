@@ -40,7 +40,8 @@ async function submit() {
 <template>
   <div class="login">
     <el-card class="login__card">
-      <div class="login__logo">光线<span>LIGHTRAY</span></div>
+      <span class="spectrum-line"></span>
+      <div class="login__logo">光线控制台<span>LIGHTRAY ADMIN</span></div>
       <h1>内容管理后台</h1>
       <p class="login__tip">使用管理员邮箱与密码登录（Supabase Auth）</p>
       <el-form @submit.prevent="submit">
@@ -68,12 +69,15 @@ async function submit() {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: radial-gradient(circle at 50% 30%, #1b1d20, #060708);
+  background:
+    radial-gradient(circle at 50% 20%, rgba(116, 174, 205, 0.16), transparent 22rem),
+    radial-gradient(circle at 8% 90%, rgba(125, 63, 109, 0.16), transparent 20rem),
+    var(--ray-bg);
   padding: 24px;
 }
 .login__card {
-  width: min(400px, 100%);
-  padding: 8px 4px;
+  width: min(430px, 100%);
+  padding: 16px 10px;
 }
 .login__logo {
   font-size: 22px;
@@ -82,26 +86,28 @@ async function submit() {
   margin-bottom: 6px;
 }
 .login__logo span {
-  font-family: 'Archivo', 'Helvetica Neue', sans-serif;
+  display: block;
+  margin-top: 8px;
+  font-family: Inter, sans-serif;
   font-size: 11px;
-  letter-spacing: 0.4em;
-  color: #92989f;
-  margin-left: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ray-blue);
   font-weight: 800;
 }
 h1 {
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 0;
 }
 .login__tip {
-  color: #92989f;
+  color: var(--ray-muted);
   margin: 4px 0 18px;
 }
 .login__btn {
   width: 100%;
 }
 .login__error {
-  color: #c0392b;
+  color: var(--ray-red);
   font-size: 13px;
   margin-top: 12px;
 }

@@ -70,12 +70,15 @@ interface LinkRow {
 }
 const links = computed(() => (Array.isArray(props.modelValue) ? (props.modelValue as LinkRow[]) : []))
 
+function updateLink(i: number, patch: Partial<LinkRow>) {
+  const arr = links.value.map((lk, idx) => (idx === i ? { ...lk, ...patch } : { ...lk }))
+  set(arr)
+}
 function addLink() {
-  const arr = props.modelValue as LinkRow[]
-  arr.push({ label: '', url: '', type: props.field.linkTypes?.[0]?.value || '' })
+  set([...links.value, { label: '', url: '', type: props.field.linkTypes?.[0]?.value || '' }])
 }
 function removeLink(i: number) {
-  ;(props.modelValue as LinkRow[]).splice(i, 1)
+  set(links.value.filter((_, idx) => idx !== i))
 }
 </script>
 
@@ -159,7 +162,7 @@ function removeLink(i: number) {
         :model-value="lk.type || ''"
         size="small"
         class="linklist__type"
-        @update:model-value="(v: string) => (lk.type = v)"
+        @update:model-value="(v: string) => updateLink(i, { type: v })"
       >
         <el-option v-for="t in field.linkTypes" :key="t.value" :label="t.label" :value="t.value" />
       </el-select>
@@ -168,13 +171,13 @@ function removeLink(i: number) {
         size="small"
         placeholder="名称"
         class="linklist__label"
-        @update:model-value="(v: string) => (lk.label = v)"
+        @update:model-value="(v: string) => updateLink(i, { label: v })"
       />
       <el-input
         :model-value="lk.url"
         size="small"
         placeholder="https://..."
-        @update:model-value="(v: string) => (lk.url = v)"
+        @update:model-value="(v: string) => updateLink(i, { url: v })"
       />
       <el-button size="small" text type="danger" @click="removeLink(i)">删除</el-button>
     </div>
@@ -192,16 +195,27 @@ function removeLink(i: number) {
   gap: 8px;
 }
 .linklist__row {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 140px minmax(0, 1fr) auto;
   gap: 8px;
   align-items: center;
+  padding: 8px;
+  border: 1px solid var(--ray-line);
+  border-radius: 7px;
+  background: #07090b;
 }
 .linklist__type {
   width: 92px;
-  flex: none;
 }
 .linklist__label {
-  width: 140px;
-  flex: none;
+  width: 100%;
+}
+@media (max-width: 760px) {
+  .linklist__row {
+    grid-template-columns: 1fr;
+  }
+  .linklist__type {
+    width: 100%;
+  }
 }
 </style>

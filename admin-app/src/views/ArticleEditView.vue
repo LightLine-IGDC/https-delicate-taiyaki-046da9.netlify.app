@@ -115,10 +115,12 @@ async function onLinkImport() {
 
 <template>
   <div v-loading="loading">
-    <div class="head">
+    <div class="admin-page-head">
       <div>
+        <span class="spectrum-line"></span>
+        <p class="admin-page-head__eyebrow">ARTICLE EDITOR</p>
         <h2>{{ isNew ? '新增文章' : '编辑文章' }}</h2>
-        <p class="desc">正文用 Markdown 编写，右侧实时预览；也可一键导入文件或链接。</p>
+        <p class="admin-page-head__desc">正文用 Markdown 编写，右侧实时预览；也可一键导入文件或链接。</p>
       </div>
       <div class="head__ops">
         <el-button @click="back">返回</el-button>
@@ -184,29 +186,12 @@ async function onLinkImport() {
 </template>
 
 <style scoped>
-.head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-.head h2 {
-  font-size: 20px;
-  font-weight: 900;
-  margin: 0;
-}
-.desc {
-  color: #92989f;
-  font-size: 13px;
-  margin: 6px 0 0;
-}
 .head__ops {
   display: flex;
   gap: 8px;
 }
 .panel {
-  border-radius: 10px;
+  overflow: hidden;
 }
 .importbar {
   display: flex;
@@ -214,13 +199,14 @@ async function onLinkImport() {
   flex-wrap: wrap;
   gap: 10px;
   padding: 12px 14px;
-  background: #101215;
-  border-radius: 8px;
+  background: var(--ray-panel-2);
+  border: 1px solid var(--ray-line);
+  border-radius: var(--ray-radius);
   margin-bottom: 18px;
 }
 .importbar__label {
   font-size: 13px;
-  color: #92989f;
+  color: var(--ray-muted);
   font-weight: 600;
 }
 .importbar__link {
@@ -238,6 +224,9 @@ async function onLinkImport() {
   grid-column: 1 / -1;
 }
 @media (max-width: 720px) {
+  .admin-page-head {
+    flex-direction: column;
+  }
   .grid {
     grid-template-columns: 1fr;
   }
