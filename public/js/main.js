@@ -287,7 +287,6 @@
             "</div>" +
           "</div>" +
           '<div class="timeline__axis-date"></div>' +
-          '<div class="timeline__hint">HOVER SPECTRUM + WHEEL TO SCRUB</div>' +
         "</div>" +
       "</div>";
     initTimelineScrubber();
@@ -307,6 +306,7 @@
     var nodes = Array.prototype.slice.call(root.querySelectorAll(".timeline__node"));
     var index = 0;
     var nodeStep = 156;
+    var axisInset = 18;
 
     function clamp(n) {
       return Math.max(0, Math.min(items.length - 1, n));
@@ -315,9 +315,10 @@
     function layoutAxis() {
       if (!axisTrack || !nodes.length) return;
       nodeStep = Math.max(118, Math.min(176, Math.floor(axisRail.clientWidth / 5)));
-      axisTrack.style.width = Math.max(axisRail.clientWidth, (nodes.length - 1) * nodeStep + 1) + "px";
+      axisTrack.style.width = Math.max(axisRail.clientWidth, (nodes.length - 1) * nodeStep + axisInset * 2) + "px";
+      axisTrack.style.setProperty("--axis-inset", axisInset + "px");
       nodes.forEach(function (node, i) {
-        node.style.left = (i * nodeStep) + "px";
+        node.style.left = (axisInset + i * nodeStep) + "px";
       });
     }
 
@@ -334,9 +335,11 @@
       track.style.transform = "translate3d(" + target + "px,0,0)";
 
       if (axisTrack && axisRail) {
-        var axisTarget = axisRail.clientWidth / 2 - (index * nodeStep);
+        var axisTarget = axisRail.clientWidth / 2 - (axisInset + index * nodeStep);
         var maxAxisTarget = 0;
-        var minAxisTarget = Math.min(0, axisRail.clientWidth - axisTrack.offsetWidth);
+        // 预留端点 inset：轨道自身有 left: var(--axis-inset)，需一并扣除，
+        // 否则滚到末尾时尾节点会贴到圆角并被 overflow:hidden 裁掉。
+        var minAxisTarget = Math.min(0, axisRail.clientWidth - axisTrack.offsetWidth - axisInset);
         var axisX = Math.max(minAxisTarget, Math.min(maxAxisTarget, axisTarget));
         axisTrack.style.transform = "translate3d(" + axisX + "px,0,0)";
       }
@@ -344,7 +347,7 @@
       var currentNode = nodes[index];
       var nextNode = nodes[Math.min(index + 1, nodes.length - 1)];
       root.style.setProperty("--timeline-progress", items.length > 1 ? String(index / (items.length - 1)) : "0");
-      root.style.setProperty("--ray-left", (index * nodeStep) + "px");
+      root.style.setProperty("--ray-left", (axisInset + index * nodeStep) + "px");
       root.style.setProperty("--ray-width", Math.max(0, (Number(nextNode.getAttribute("data-index")) - index) * nodeStep) + "px");
       root.classList.toggle("is-final", index === items.length - 1);
       if (ray) {

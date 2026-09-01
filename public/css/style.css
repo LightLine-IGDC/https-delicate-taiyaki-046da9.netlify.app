@@ -481,10 +481,11 @@ body.is-menu-open .topbar { color: #0a0a0a; }
 }
 .timeline__axis-wrap:hover .timeline__axis::before { opacity: 1; }
 .timeline__axis-track {
+  --axis-inset: 18px;
   position: absolute;
-  left: 0;
+  left: var(--axis-inset);
   top: 0;
-  min-width: 100%;
+  min-width: calc(100% - var(--axis-inset) * 2);
   height: 100%;
   border-radius: inherit;
   background: var(--spectrum);
@@ -546,16 +547,6 @@ body.is-menu-open .topbar { color: #0a0a0a; }
   font-weight: 800;
   letter-spacing: .18em;
   text-align: center;
-}
-.timeline__hint {
-  margin-top: 12px;
-  color: #fff;
-  font-family: var(--font-en);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-align: center;
-  opacity: .84;
 }
 @keyframes ray-shoot {
   0% { transform: translateY(-50%) scaleX(0); opacity: 0; }
@@ -844,8 +835,7 @@ body.is-menu-open .topbar { color: #0a0a0a; }
   }
   .timeline__axis { height: 9px; }
   .timeline__ray,
-  .timeline__axis-date,
-  .timeline__hint { display: none; }
+  .timeline__axis-date { display: none; }
   .timeline__node {
     width: 18px;
     height: 24px;

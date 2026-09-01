@@ -71,10 +71,12 @@ const checks = [
       assert(main.includes('axisTrack.style.transform'), 'timeline axis track is not translated with the active node')
       assert(main.includes('axis.addEventListener("wheel"'), 'timeline wheel interaction is missing')
       assert(main.includes('ray.classList.add("is-shooting")'), 'timeline ray animation trigger is missing')
-      assert(main.includes('HOVER SPECTRUM + WHEEL TO SCRUB'), 'timeline wheel hint is missing')
+      assert(!main.includes('HOVER SPECTRUM + WHEEL TO SCRUB'), 'timeline wheel hint should be removed')
+      assert(main.includes('axisInset'), 'timeline axis endpoints need inset spacing to avoid clipping')
       assert(css.includes('.timeline__track'), 'horizontal timeline track styles are missing')
       assert(css.includes('height: 190px'), 'timeline cards do not have a fixed height')
       assert(css.includes('.timeline__axis-track'), 'scrolling timeline axis track styles are missing')
+      assert(css.includes('left: var(--axis-inset)'), 'timeline axis track should start after endpoint inset')
       assert(css.includes('overflow: hidden'), 'timeline axis does not clip the scrolling spectrum track')
       assert(css.includes('.timeline__ray.is-shooting'), 'timeline ray shooting animation styles are missing')
     },
