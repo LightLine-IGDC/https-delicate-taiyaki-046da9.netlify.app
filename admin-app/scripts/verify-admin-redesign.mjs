@@ -59,6 +59,20 @@ const checks = [
       assert(index.includes('js/main.js'), 'public homepage script wiring changed unexpectedly')
     },
   },
+  {
+    name: 'public timeline uses horizontal spectrum scrubber',
+    run() {
+      const main = read('public/js/main.js')
+      const css = read('public/css/style.css')
+      assert(main.includes('initTimelineScrubber()'), 'timeline scrubber initializer is missing')
+      assert(main.includes('timeline__axis-wrap'), 'timeline spectrum axis markup is missing')
+      assert(main.includes('axis.addEventListener("wheel"'), 'timeline wheel interaction is missing')
+      assert(main.includes('ray.classList.add("is-shooting")'), 'timeline ray animation trigger is missing')
+      assert(main.includes('HOVER SPECTRUM + WHEEL TO SCRUB'), 'timeline wheel hint is missing')
+      assert(css.includes('.timeline__track'), 'horizontal timeline track styles are missing')
+      assert(css.includes('.timeline__ray.is-shooting'), 'timeline ray shooting animation styles are missing')
+    },
+  },
 ]
 
 for (const check of checks) {

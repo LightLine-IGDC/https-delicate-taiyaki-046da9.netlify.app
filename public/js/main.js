@@ -261,17 +261,94 @@
   }
 
   function renderTimeline() {
-    var html = (DATA.timeline || []).map(function (t, i) {
+    var items = DATA.timeline || [];
+    var cardsHtml = items.map(function (t, i) {
       var img = t.image ? '<img class="timeline__thumb" src="' + esc(t.image) + '" alt="' + esc(t.title) + '" loading="lazy">'
                        : '<div class="timeline__thumb" style="background-image:url(\'' + placeholder(t.title, t.date) + '\');background-size:cover;background-position:center"></div>';
-      return '<div class="timeline__item" data-reveal>' +
-        '<span class="timeline__dot"></span>' +
-        '<div class="timeline__date">' + esc(t.date) + "</div>" +
+      return '<article class="timeline__item' + (i === 0 ? " is-active" : "") + '" data-index="' + i + '" data-reveal>' +
         '<div class="timeline__card">' + img +
-        '<div><h3 class="timeline__title">' + esc(t.title) + '</h3><p class="timeline__text">' + esc(t.text) + "</p></div>" +
-        "</div></div>";
+        '<div class="timeline__content"><div class="timeline__date">' + esc(t.date) + "</div>" +
+        '<h3 class="timeline__title">' + esc(t.title) + '</h3><p class="timeline__text">' + esc(t.text) + "</p></div>" +
+        "</div></article>";
     }).join("");
-    $("#timelineList").innerHTML = html;
+    var nodesHtml = items.map(function (t, i) {
+      var progress = items.length > 1 ? (i / (items.length - 1)) * 100 : 0;
+      return '<button class="timeline__node' + (i === 0 ? " is-active" : "") + '" type="button" data-index="' + i + '" style="left:' + progress + '%" aria-label="' + esc(t.date + " " + t.title) + '">' +
+        '<span></span><em>' + esc(t.date) + "</em></button>";
+    }).join("");
+    $("#timelineList").innerHTML =
+      '<div class="timeline__stage" data-reveal>' +
+        '<div class="timeline__viewport" tabindex="0" aria-label="横向社团时间线">' +
+          '<div class="timeline__track">' + cardsHtml + "</div>" +
+        "</div>" +
+        '<div class="timeline__axis-wrap" aria-label="停留并滚动鼠标滚轮以浏览时间线">' +
+          '<div class="timeline__axis">' +
+            '<span class="timeline__ray"></span>' + nodesHtml +
+          "</div>" +
+          '<div class="timeline__hint">HOVER SPECTRUM + WHEEL TO SCRUB</div>' +
+        "</div>" +
+      "</div>";
+    initTimelineScrubber();
+  }
+
+  function initTimelineScrubber() {
+    var root = $("#timelineList .timeline__stage");
+    if (!root) return;
+    var viewport = root.querySelector(".timeline__viewport");
+    var track = root.querySelector(".timeline__track");
+    var axis = root.querySelector(".timeline__axis-wrap");
+    var ray = root.querySelector(".timeline__ray");
+    var items = Array.prototype.slice.call(root.querySelectorAll(".timeline__item"));
+    var nodes = Array.prototype.slice.call(root.querySelectorAll(".timeline__node"));
+    var index = 0;
+
+    function clamp(n) {
+      return Math.max(0, Math.min(items.length - 1, n));
+    }
+
+    function update(next) {
+      if (!items.length) return;
+      index = clamp(next);
+      items.forEach(function (el, i) { el.classList.toggle("is-active", i === index); });
+      nodes.forEach(function (el, i) { el.classList.toggle("is-active", i === index); });
+
+      var active = items[index];
+      var target = viewport.clientWidth / 2 - (active.offsetLeft + active.offsetWidth / 2);
+      track.style.transform = "translate3d(" + target + "px,0,0)";
+
+      var currentNode = nodes[index];
+      var nextNode = nodes[Math.min(index + 1, nodes.length - 1)];
+      var axisBox = currentNode.parentElement.getBoundingClientRect();
+      var currentBox = currentNode.getBoundingClientRect();
+      var nextBox = nextNode.getBoundingClientRect();
+      var start = currentBox.left + currentBox.width / 2 - axisBox.left;
+      var end = nextBox.left + nextBox.width / 2 - axisBox.left;
+      root.style.setProperty("--timeline-progress", items.length > 1 ? String(index / (items.length - 1)) : "0");
+      root.style.setProperty("--ray-left", start + "px");
+      root.style.setProperty("--ray-width", Math.max(0, end - start) + "px");
+      root.classList.toggle("is-final", index === items.length - 1);
+      if (ray) {
+        ray.classList.remove("is-shooting");
+        void ray.offsetWidth;
+        ray.classList.add("is-shooting");
+      }
+    }
+
+    axis.addEventListener("wheel", function (e) {
+      if (!items.length) return;
+      e.preventDefault();
+      var dir = e.deltaY > 0 || e.deltaX > 0 ? 1 : -1;
+      update(index + dir);
+    }, { passive: false });
+
+    nodes.forEach(function (node) {
+      node.addEventListener("click", function () {
+        update(Number(node.getAttribute("data-index")) || 0);
+      });
+    });
+
+    window.addEventListener("resize", function () { update(index); });
+    update(0);
   }
 
   function renderWorks() {
