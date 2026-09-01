@@ -272,8 +272,7 @@
         "</div></article>";
     }).join("");
     var nodesHtml = items.map(function (t, i) {
-      var progress = items.length > 1 ? (i / (items.length - 1)) * 100 : 0;
-      return '<button class="timeline__node' + (i === 0 ? " is-active" : "") + '" type="button" data-index="' + i + '" style="left:' + progress + '%" aria-label="' + esc(t.date + " " + t.title) + '">' +
+      return '<button class="timeline__node' + (i === 0 ? " is-active" : "") + '" type="button" data-index="' + i + '" aria-label="' + esc(t.date + " " + t.title) + '">' +
         '<span></span><em>' + esc(t.date) + "</em></button>";
     }).join("");
     $("#timelineList").innerHTML =
@@ -283,8 +282,11 @@
         "</div>" +
         '<div class="timeline__axis-wrap" aria-label="停留并滚动鼠标滚轮以浏览时间线">' +
           '<div class="timeline__axis">' +
-            '<span class="timeline__ray"></span>' + nodesHtml +
+            '<div class="timeline__axis-track">' +
+              '<span class="timeline__ray"></span>' + nodesHtml +
+            "</div>" +
           "</div>" +
+          '<div class="timeline__axis-date"></div>' +
           '<div class="timeline__hint">HOVER SPECTRUM + WHEEL TO SCRUB</div>' +
         "</div>" +
       "</div>";
@@ -297,35 +299,53 @@
     var viewport = root.querySelector(".timeline__viewport");
     var track = root.querySelector(".timeline__track");
     var axis = root.querySelector(".timeline__axis-wrap");
+    var axisRail = root.querySelector(".timeline__axis");
+    var axisTrack = root.querySelector(".timeline__axis-track");
+    var axisDate = root.querySelector(".timeline__axis-date");
     var ray = root.querySelector(".timeline__ray");
     var items = Array.prototype.slice.call(root.querySelectorAll(".timeline__item"));
     var nodes = Array.prototype.slice.call(root.querySelectorAll(".timeline__node"));
     var index = 0;
+    var nodeStep = 156;
 
     function clamp(n) {
       return Math.max(0, Math.min(items.length - 1, n));
     }
 
+    function layoutAxis() {
+      if (!axisTrack || !nodes.length) return;
+      nodeStep = Math.max(118, Math.min(176, Math.floor(axisRail.clientWidth / 5)));
+      axisTrack.style.width = Math.max(axisRail.clientWidth, (nodes.length - 1) * nodeStep + 1) + "px";
+      nodes.forEach(function (node, i) {
+        node.style.left = (i * nodeStep) + "px";
+      });
+    }
+
     function update(next) {
       if (!items.length) return;
+      layoutAxis();
       index = clamp(next);
       items.forEach(function (el, i) { el.classList.toggle("is-active", i === index); });
       nodes.forEach(function (el, i) { el.classList.toggle("is-active", i === index); });
+      if (axisDate) axisDate.textContent = nodes[index].querySelector("em").textContent || "";
 
       var active = items[index];
       var target = viewport.clientWidth / 2 - (active.offsetLeft + active.offsetWidth / 2);
       track.style.transform = "translate3d(" + target + "px,0,0)";
 
+      if (axisTrack && axisRail) {
+        var axisTarget = axisRail.clientWidth / 2 - (index * nodeStep);
+        var maxAxisTarget = 0;
+        var minAxisTarget = Math.min(0, axisRail.clientWidth - axisTrack.offsetWidth);
+        var axisX = Math.max(minAxisTarget, Math.min(maxAxisTarget, axisTarget));
+        axisTrack.style.transform = "translate3d(" + axisX + "px,0,0)";
+      }
+
       var currentNode = nodes[index];
       var nextNode = nodes[Math.min(index + 1, nodes.length - 1)];
-      var axisBox = currentNode.parentElement.getBoundingClientRect();
-      var currentBox = currentNode.getBoundingClientRect();
-      var nextBox = nextNode.getBoundingClientRect();
-      var start = currentBox.left + currentBox.width / 2 - axisBox.left;
-      var end = nextBox.left + nextBox.width / 2 - axisBox.left;
       root.style.setProperty("--timeline-progress", items.length > 1 ? String(index / (items.length - 1)) : "0");
-      root.style.setProperty("--ray-left", start + "px");
-      root.style.setProperty("--ray-width", Math.max(0, end - start) + "px");
+      root.style.setProperty("--ray-left", (index * nodeStep) + "px");
+      root.style.setProperty("--ray-width", Math.max(0, (Number(nextNode.getAttribute("data-index")) - index) * nodeStep) + "px");
       root.classList.toggle("is-final", index === items.length - 1);
       if (ray) {
         ray.classList.remove("is-shooting");

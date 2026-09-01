@@ -66,10 +66,16 @@ const checks = [
       const css = read('public/css/style.css')
       assert(main.includes('initTimelineScrubber()'), 'timeline scrubber initializer is missing')
       assert(main.includes('timeline__axis-wrap'), 'timeline spectrum axis markup is missing')
+      assert(main.includes('timeline__axis-track'), 'scrolling timeline axis track is missing')
+      assert(main.includes('nodeStep'), 'timeline node spacing is not driven by a fixed scroll step')
+      assert(main.includes('axisTrack.style.transform'), 'timeline axis track is not translated with the active node')
       assert(main.includes('axis.addEventListener("wheel"'), 'timeline wheel interaction is missing')
       assert(main.includes('ray.classList.add("is-shooting")'), 'timeline ray animation trigger is missing')
       assert(main.includes('HOVER SPECTRUM + WHEEL TO SCRUB'), 'timeline wheel hint is missing')
       assert(css.includes('.timeline__track'), 'horizontal timeline track styles are missing')
+      assert(css.includes('height: 190px'), 'timeline cards do not have a fixed height')
+      assert(css.includes('.timeline__axis-track'), 'scrolling timeline axis track styles are missing')
+      assert(css.includes('overflow: hidden'), 'timeline axis does not clip the scrolling spectrum track')
       assert(css.includes('.timeline__ray.is-shooting'), 'timeline ray shooting animation styles are missing')
     },
   },
