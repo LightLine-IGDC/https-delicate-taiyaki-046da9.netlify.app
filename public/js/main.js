@@ -337,9 +337,7 @@
       if (axisTrack && axisRail) {
         var axisTarget = axisRail.clientWidth / 2 - (axisInset + index * nodeStep);
         var maxAxisTarget = 0;
-        // 预留端点 inset：轨道自身有 left: var(--axis-inset)，需一并扣除，
-        // 否则滚到末尾时尾节点会贴到圆角并被 overflow:hidden 裁掉。
-        var minAxisTarget = Math.min(0, axisRail.clientWidth - axisTrack.offsetWidth - axisInset);
+        var minAxisTarget = Math.min(0, axisRail.clientWidth - axisTrack.offsetWidth);
         var axisX = Math.max(minAxisTarget, Math.min(maxAxisTarget, axisTarget));
         axisTrack.style.transform = "translate3d(" + axisX + "px,0,0)";
       }
