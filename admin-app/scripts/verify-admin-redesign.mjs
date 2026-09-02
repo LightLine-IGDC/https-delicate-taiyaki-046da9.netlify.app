@@ -83,6 +83,15 @@ const checks = [
       assert(css.includes('.timeline__ray.is-shooting'), 'timeline ray shooting animation styles are missing')
     },
   },
+  {
+    name: 'cloudflare pages config avoids unsupported build fields',
+    run() {
+      const wrangler = read('wrangler.toml')
+      assert(wrangler.includes('pages_build_output_dir = "public"'), 'Cloudflare Pages output directory should be public')
+      assert(!/^\[build\]/m.test(wrangler), 'Cloudflare Pages wrangler config must not include unsupported [build]')
+      assert(!/^\[build\.environment\]/m.test(wrangler), 'Cloudflare Pages environment variables belong in the dashboard, not [build.environment]')
+    },
+  },
 ]
 
 for (const check of checks) {

@@ -1,17 +1,8 @@
 # 光线独立游戏制作社团 · Cloudflare Pages 配置
-# Cloudflare Pages 不会读取 netlify.toml，因此用 wrangler.toml 声明构建与输出目录。
+# Cloudflare Pages 的 Wrangler 配置不支持 [build] 字段。
+# 构建命令与 VITE_* 环境变量请在 Cloudflare 控制台设置。
 name = "light"
 compatibility_date = "2024-01-01"
 
 # 前台为纯静态，构建产物（后台 admin-app）输出到 public/admin/，整体发布 public 目录
 pages_build_output_dir = "public"
-
-[build]
-# 关键：必须 `npm install admin-app 的依赖` 后再 build，
-# 否则 Cloudflare 只装了根目录依赖，找不到 vite 而构建失败。
-command = "cd admin-app && npm install && npm run build"
-
-[build.environment]
-# 后台 SPA 在构建时读取（.env 不入库），请改成你的真实值
-VITE_SUPABASE_URL = "https://envnuwpiqolslhghudef.supabase.co"
-VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVudm51d3BpcW9sc2xoZ2h1ZGVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcyMjM1MTAsImV4cCI6MjEwMjc5OTUxMH0.O0ohAAfg4vY1glFU_Q_ez5R-ZwG502Sb4RswlnUOJKI"
