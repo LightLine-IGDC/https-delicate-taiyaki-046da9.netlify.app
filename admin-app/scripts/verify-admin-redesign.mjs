@@ -92,6 +92,17 @@ const checks = [
       assert(!/^\[build\.environment\]/m.test(wrangler), 'Cloudflare Pages environment variables belong in the dashboard, not [build.environment]')
     },
   },
+  {
+    name: 'admin falls back to public Supabase runtime config',
+    run() {
+      const html = read('admin-app/index.html')
+      const supabase = read('admin-app/src/lib/supabase.ts')
+      assert(html.includes('/js/config.js'), 'admin HTML should load public Supabase config before the app module')
+      assert(html.indexOf('/js/config.js') < html.indexOf('</head>'), 'admin runtime config should load in head before Vite hoists the app module')
+      assert(supabase.includes('window.SUPABASE_CONFIG'), 'admin Supabase client should read public runtime config as a fallback')
+      assert(supabase.includes('isConfigured() ? createClient(url, anon) : null'), 'admin Supabase client should not throw during module load when env vars are missing')
+    },
+  },
 ]
 
 for (const check of checks) {

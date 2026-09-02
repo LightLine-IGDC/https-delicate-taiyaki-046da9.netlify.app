@@ -9,6 +9,13 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 
+interface Window {
+  SUPABASE_CONFIG?: {
+    url?: string
+    anonKey?: string
+  }
+}
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<Record<string, unknown>, Record<string, unknown>, unknown>
