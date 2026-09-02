@@ -84,6 +84,13 @@ const checks = [
     },
   },
   {
+    name: 'public renderer refreshes site data after remote content loads',
+    run() {
+      const main = read('public/js/main.js')
+      assert(/function renderAll\(\) \{\s*SITE = DATA\.site \|\| \{\}/.test(main), 'renderAll should refresh SITE before rendering remote site fields')
+    },
+  },
+  {
     name: 'cloudflare pages config avoids unsupported build fields',
     run() {
       const wrangler = read('wrangler.toml')
@@ -101,6 +108,17 @@ const checks = [
       assert(html.indexOf('/js/config.js') < html.indexOf('</head>'), 'admin runtime config should load in head before Vite hoists the app module')
       assert(supabase.includes('window.SUPABASE_CONFIG'), 'admin Supabase client should read public runtime config as a fallback')
       assert(supabase.includes('isConfigured() ? createClient(url, anon) : null'), 'admin Supabase client should not throw during module load when env vars are missing')
+    },
+  },
+  {
+    name: 'cloudflare env template matches public Supabase config',
+    run() {
+      const config = read('public/js/config.js')
+      const env = read('cloudflare-pages.env')
+      const url = config.match(/url:\s*"([^"]+)"/)?.[1]
+      const anon = config.match(/anonKey:\s*"([^"]+)"/)?.[1]
+      assert(url && env.includes(`VITE_SUPABASE_URL=${url}`), 'Cloudflare env template should use the public Supabase URL')
+      assert(anon && env.includes(`VITE_SUPABASE_ANON_KEY=${anon}`), 'Cloudflare env template should use the public Supabase anon key')
     },
   },
 ]

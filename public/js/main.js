@@ -566,6 +566,7 @@
 
   /* ---------- 渲染（本地默认内容 / 远程内容合并后统一调用） ---------- */
   function renderAll() {
+    SITE = DATA.site || {};
     renderSite();
     renderIntro();
     renderTimeline();
